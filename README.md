@@ -390,7 +390,7 @@ optimizer = optim.Adam(
 
 这个内容比较多，我就写成了一篇文章。
 
-[PyTorch 中模型的使用]()
+[PyTorch 中模型的使用](https://zhuanlan.zhihu.com/p/73893187)
 
 
 
