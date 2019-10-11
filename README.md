@@ -28,7 +28,7 @@
 8. **冻结某些层的参数**
 9. **对不同层使用不同学习率**
 10. **模型相关操作**
-
+11. **Pytorch内置one hot函数**
 
 
 
@@ -186,6 +186,7 @@ print(one_hot(label))
 
 [Convert int into one-hot format](<https://discuss.pytorch.org/t/convert-int-into-one-hot-format/507>)
 
+注：第11条有更简单的方法。
 
 
 
@@ -392,5 +393,44 @@ optimizer = optim.Adam(
 
 [PyTorch 中模型的使用](https://zhuanlan.zhihu.com/p/73893187)
 
+
+
+
+
+### 11、Pytorch内置one_hot函数
+感谢 **yangyangyang** 补充：Pytorch 1.1后，one_hot可以直接用 `torch.nn.functional.one_hot`。 
+然后我将Pytorch升级到1.2版本，试用了下 `one_hot` 函数，确实很方便。  
+具体用法如下：
+```python3
+import torch.nn.functional as F
+import torch
+
+tensor =  torch.arange(0, 5) % 3  # tensor([0, 1, 2, 0, 1])
+one_hot = F.one_hot(tensor)
+
+# 输出：
+# tensor([[1, 0, 0],
+#         [0, 1, 0],
+#         [0, 0, 1],
+#         [1, 0, 0],
+#         [0, 1, 0]])
+```
+
+`F.one_hot` 会自己检测不同类别个数，生成对应独热编码。我们也可以自己指定类别数：
+
+```python3
+tensor =  torch.arange(0, 5) % 3  # tensor([0, 1, 2, 0, 1])
+one_hot = F.one_hot(tensor, num_classes=5)
+
+# 输出：
+# tensor([[1, 0, 0, 0, 0],
+#         [0, 1, 0, 0, 0],
+#         [0, 0, 1, 0, 0],
+#         [1, 0, 0, 0, 0],
+#         [0, 1, 0, 0, 0]])
+```
+
+升级 Pytorch (cpu版本)的命令：`conda install pytorch torchvision -c pytorch`
+（希望Pytorch升级不会影响项目代码）
 
 
