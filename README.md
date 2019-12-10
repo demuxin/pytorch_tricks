@@ -28,7 +28,8 @@
 8. **冻结某些层的参数**
 9. **对不同层使用不同学习率**
 10. **模型相关操作**
-11. **Pytorch内置one hot函数**
+11. **Pytorch内置one hot函数**  
+12. **网络参数初始化**  
 
 
 
@@ -431,6 +432,33 @@ one_hot = F.one_hot(tensor, num_classes=5)
 ```
 
 升级 Pytorch (cpu版本)的命令：`conda install pytorch torchvision -c pytorch`
-（希望Pytorch升级不会影响项目代码）
+（希望Pytorch升级不会影响项目代码）  
 
+
+
+### 12、网络参数初始化  
+     神经网络的初始化是训练流程的重要基础环节，会对模型的性能、收敛性、收敛速度等产生重要的影响。  
+以下介绍两种常用的初始化操作。  
+
+(1) 使用pytorch内置的torch.nn.init方法。  
+
+常用的初始化操作，例如正态分布、均匀分布、xavier初始化、kaiming初始化等都已经实现，可以直接使用。  
+具体详见[PyTorch 中 torch.nn.init 中文文档](https://ptorch.com/docs/1/nn-init)。  
+
+```python3  
+init.xavier_uniform(net1[0].weight)  
+```  
+
+(2) 对于一些更加灵活的初始化方法，可以借助numpy。  
+
+对于自定义的初始化方法，有时tensor的功能不如numpy强大灵活，故可以借助numpy实现初始化方法，再转换  
+到tensor上使用。  
+
+```python3  
+for layer in net1.modules():
+    if isinstance(layer, nn.Linear): # 判断是否是线性层
+        param_shape = layer.weight.shape
+        layer.weight.data = torch.from_numpy(np.random.normal(0, 0.5, size=param_shape)) 
+        # 定义为均值为 0，方差为 0.5 的正态分布
+``` 
 
